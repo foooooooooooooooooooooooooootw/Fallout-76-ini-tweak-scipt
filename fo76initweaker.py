@@ -1,13 +1,27 @@
 import os
 import configparser
+from pathlib import Path
+import shutil
 from stat import S_IREAD, S_IWUSR
 
 home = os.path.expanduser('~')
 location = os.path.join(home, 'Documents','My Games', 'Fallout 76')
-baseini = "Fallout76.ini"
+defaultini = "Fallout76.ini"
+baseini = "Fallout76Custom.ini"
 prefsini = "Fallout76Prefs.ini"
 basefilepath = os.path.join (location, baseini)
 prefsfilepath = os.path.join (location, prefsini)
+defaultfilepath = os.path.join(location, defaultini)
+print(basefilepath)
+customexistence = Path(basefilepath)
+
+if customexistence.is_file():
+    pass
+else:
+    shutil.copy(defaultfilepath, os.path.join(location, baseini))
+    
+
+
 
 print("""
 1 - Optimize/Reset ini files
@@ -205,6 +219,7 @@ elif choice == "2":
         os.chmod(basefilepath, S_IWUSR|S_IREAD)
         config.read(basefilepath)
         config['General']['bPlayMainMenuMusic'] = "0"
+        config['General']['uMainMenuMusicAttnmB'] = "9999999"
         with open(basefilepath, 'w') as configfile:
             config.write(configfile)
         os.chmod(basefilepath, S_IREAD)
@@ -230,6 +245,5 @@ elif choice == "2":
         quit
 elif choice == "3":        
     quit
-
 
 
